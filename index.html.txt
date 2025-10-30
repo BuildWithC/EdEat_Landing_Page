@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDEAT AI - The Founder's Circle</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+body {
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+background: linear-gradient(135deg, #4a90a4 0%, #5da89e 25%, #7ec491 50%, #a8db7e 75%, #c8e66f 100%);
+color: #FFFFFF;
+overflow-x: hidden;
+min-height: 100vh;
+}
+h1, h2, h3 {
+font-weight: 900;
+letter-spacing: -0.02em;
+}
+@keyframes gradient-flow {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+.main-gradient-text {
+background: linear-gradient(90deg, #b3e09b, #5a9ca8, #b3e09b);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+background-size: 200% auto;
+transition: all 0.3s ease;
+}
+h1:hover .main-gradient-text {
+animation: gradient-flow 2s ease infinite;
+}
+.secondary-gradient-text {
+background: linear-gradient(90deg, #5a9ca8, #b3e09b);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+.glass-pane {
+background: rgba(255, 255, 255, 0.15);
+backdrop-filter: blur(20px);
+border: 1px solid rgba(255, 255, 255, 0.2);
+border-radius: 1.5rem;
+box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}
+.glow-effect {
+position: absolute;
+z-index: -1;
+filter: blur(100px);
+opacity: 0.2;
+border-radius: 50%;
+}
+.glow-1 {
+width: 600px;
+height: 600px;
+left: -200px;
+top: -200px;
+background: radial-gradient(circle, rgba(199, 230, 111, 0.4) 0%, transparent 70%);
+}
+.glow-2 {
+width: 600px;
+height: 600px;
+right: -250px;
+top: 50%;
+background: radial-gradient(circle, rgba(74, 144, 164, 0.4) 0%, transparent 70%);
+}
+.container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 1rem;
+}
+.logo-font {
+font-size: 2.5rem;
+font-weight: 900;
+letter-spacing: -0.05em;
+}
+.cta-button {
+transition: all 0.3s ease;
+box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(179, 224, 155, 0.3);
+color: #1a4d2e;
+background: linear-gradient(90deg, #b3e09b, #7ec491);
+border: none;
+cursor: pointer;
+font-weight: 700;
+font-size: 1.125rem;
+padding: 1rem 2rem;
+border-radius: 0.5rem;
+width: 100%;
+}
+.cta-button:hover {
+transform: translateY(-3px) scale(1.05);
+box-shadow: 0 0 30px rgba(255, 255, 255, 0.5), 0 0 50px rgba(179, 224, 155, 0.5);
+}
+.role-selector {
+padding: 0.625rem 1.25rem;
+border-radius: 99px;
+border: 1px solid rgba(255, 255, 255, 0.3);
+background: rgba(255, 255, 255, 0.1);
+color: rgba(255, 255, 255, 0.7);
+font-weight: 600;
+transition: all 0.3s ease;
+cursor: pointer;
+}
+.role-selector.active, .role-selector:hover {
+color: #1a4d2e;
+background: rgba(179, 224, 155, 0.9);
+border-color: #b3e09b;
+box-shadow: 0 0 20px rgba(179, 224, 155, 0.5);
+}
+.demo-card {
+background: rgba(255, 255, 255, 0.1);
+border: 1px solid rgba(255, 255, 255, 0.2);
+border-radius: 1rem;
+transition: all 0.3s ease;
+cursor: pointer;
+padding: 1.5rem;
+}
+.demo-card:hover {
+background: rgba(255, 255, 255, 0.2);
+border-color: rgba(255, 255, 255, 0.4);
+transform: translateY(-5px);
+}
+.demo-card.selected {
+background: rgba(179, 224, 155, 0.3);
+border-color: #b3e09b;
+transform: scale(1.05);
+}
+.demo-input {
+background: rgba(255, 255, 255, 0.15);
+border: 1px solid rgba(255, 255, 255, 0.3);
+color: #ffffff;
+transition: all 0.3s ease;
+width: 100%;
+padding: 1rem 1.25rem 1rem 3rem;
+border-radius: 0.5rem;
+font-size: 1.125rem;
+}
+.demo-input::placeholder {
+color: rgba(255, 255, 255, 0.6);
+}
+.demo-input:focus {
+outline: none;
+border-color: #b3e09b;
+background: rgba(255, 255, 255, 0.25);
+box-shadow: 0 0 20px rgba(179, 224, 155, 0.4);
+}
+.hidden {
+display: none;
+}
+.score-circle {
+width: 150px;
+height: 150px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+margin: 0 auto;
+}
+.score-circle-bg {
+stroke-dasharray: 440;
+stroke-dashoffset: 440;
+transition: stroke-dashoffset 2s ease-out;
+}
+@keyframes scan {
+0% { top: 0%; }
+50% { top: 100%; }
+100% { top: 0%; }
+}
+.scanner {
+position: absolute;
+left: 0;
+width: 100%;
+height: 3px;
+background: linear-gradient(90deg, transparent, #b3e09b, transparent);
+animation: scan 3s infinite linear;
+}
+#neural-network {
+opacity: 0.5;
+}
+.text-center { text-align: center; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mb-20 { margin-bottom: 5rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mt-20 { margin-top: 5rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.p-8 { padding: 2rem; }
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+
+```
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .grid { display: grid; }
+    .flex { display: flex; }
+    .gap-4 { gap: 1rem; }
+    .gap-6 { gap: 1.5rem; }
+    .gap-8 { gap: 2rem; }
+    .justify-center { justify-content: center; }
+    .items-center { align-items: center; }
+
+    .max-w-4xl { max-width: 56rem; }
+    .max-w-2xl { max-width: 42rem; }
+    .max-w-md { max-width: 28rem; }
+    .w-full { width: 100%; }
+
+    .text-4xl { font-size: 2.25rem; }
+    .text-5xl { font-size: 3rem; }
+    .text-3xl { font-size: 1.875rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .text-xl { font-size: 1.25rem; }
+    .text-lg { font-size: 1.125rem; }
+    .text-sm { font-size: 0.875rem; }
+    .text-xs { font-size: 0.75rem; }
+
+    .text-slate-300 { color: #f8fafc; }
+    .text-slate-400 { color: #e2e8f0; }
+    .text-gray-500 { color: #1e3a2e; }
+    .text-gray-600 { color: #1a4d2e; }
+    .text-green-300 { color: #b3e09b; }
+
+    .font-black { font-weight: 900; }
+    .font-bold { font-weight: 700; }
+
+    .uppercase { text-transform: uppercase; }
+
+    @media (min-width: 768px) {
+        .md\\:text-7xl { font-size: 4.5rem; }
+        .md\\:text-5xl { font-size: 3rem; }
+        .md\\:text-xl { font-size: 1.25rem; }
+        .md\\:p-16 { padding: 4rem; }
+        .md\\:py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+        .md\\:p-12 { padding: 3rem; }
+        .md\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .md\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .md\\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+    }
+    .min-h-screen { min-height: 100vh; }
+</style>
+
+```
+
+</head>
+<body>
+<div class="relative min-h-screen w-full">
+<div class="glow-effect glow-1"></div>
+<div class="glow-effect glow-2"></div>
+
+```
+<main class="relative container py-16 md:py-24" style="z-index: 10;">
+
+    <div class="w-full text-center py-6 mb-4">
+        <span class="logo-font">
+            <span style="color: #b3e09b;">ED</span><span style="color: white;">EAT</span>
+        </span>
+    </div>
+
+    <header class="text-center max-w-4xl mx-auto mb-20">
+        <h1 class="text-5xl md:text-7xl font-black mb-4" style="letter-spacing: -0.02em;">
+            Stop Guessing.
+            <span class="main-gradient-text">Start Connecting.</span>
+        </h1>
+        <p class="text-lg md:text-xl text-slate-300">
+            Whether you're a restaurant seeking your next viral star or a creator hunting for your next great meal, EDEAT AI is your matchmaker. We turn random collabs into a science.
+        </p>
+    </header>
+
+    <section class="glass-pane text-center p-8 md:p-16 mb-20">
+         <h2 class="text-4xl md:text-5xl font-black mb-4" style="letter-spacing: -0.02em;">
+            Join the Founder's Circle.
+         </h2>
+        <p class="text-lg text-slate-300 max-w-2xl mx-auto mb-8">
+            Be among the first to access our AI-powered platform. Select your role for priority access, exclusive perks, and your personalized match analysis.
+        </p>
+
+        <div class="flex justify-center gap-4 mb-8" id="role-selector-container">
+            <button class="role-selector" data-role="restaurant">I'm a Restaurant</button>
+            <button class="role-selector" data-role="creator">I'm a Creator</button>
+        </div>
+
+        <form id="final-form" class="w-full max-w-md mx-auto hidden">
+            <div class="relative">
+                <svg class="absolute" style="left: 1rem; top: 50%; transform: translateY(-50%); width: 1.5rem; height: 1.5rem; color: #9ca3af;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path></svg>
+                <input id="final-email-input" type="email" required placeholder="Enter your best email" class="demo-input">
+            </div>
+            <button type="submit" class="mt-4 cta-button">Claim My Spot in the Circle</button>
+        </form>
+
+         <div id="final-success-message" class="mt-6 text-green-300 hidden">
+            <h3 class="text-2xl font-bold">Welcome to the circle.</h3>
+            <p>We've saved your spot. Check your email for a confirmation and next steps.</p>
+         </div>
+    </section>
+
+    <section id="demo-container" class="glass-pane p-8 md:p-12 mb-20" style="min-height: 500px; display: flex; flex-direction: column; justify-content: center;">
+        <div id="demo-step-1" class="text-center">
+            <h2 class="text-3xl font-bold mb-4">See The AI In Action.</h2>
+            <p class="text-slate-300 mb-8 max-w-2xl mx-auto">First, tell us who you are.</p>
+            <div class="grid gap-6 max-w-2xl mx-auto" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                <div class="demo-card" data-choice="restaurant">
+                    <svg class="mx-auto mb-4" style="width: 3rem; height: 3rem; color: #b3e09b;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m-1 4h1m5-4h1m-1 4h1m-1-4h1m-1 4h1"></path></svg>
+                    <h3 class="text-xl font-bold">Restaurant</h3>
+                </div>
+                <div class="demo-card" data-choice="creator">
+                    <svg class="mx-auto mb-4" style="width: 3rem; height: 3rem; color: #5a9ca8;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <h3 class="text-xl font-bold">Creator</h3>
+                </div>
+            </div>
+        </div>
+
+        <div id="demo-step-2" class="text-center hidden"></div>
+
+        <div id="demo-analysis" class="hidden text-center">
+            <h2 class="text-3xl font-bold main-gradient-text mb-4" style="animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;">ANALYZING...</h2>
+            <div class="relative w-full max-w-md mx-auto" style="height: 12rem; background: rgba(0,0,0,0.2); border-radius: 0.5rem; overflow: hidden; border: 1px solid #1e293b;">
+                <canvas id="neural-network" class="absolute" style="top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                <div class="scanner"></div>
+                <p id="analysis-text" class="absolute text-slate-300 text-sm" style="bottom: 1rem; left: 1rem; right: 1rem; transition: opacity 0.5s;"></p>
+            </div>
+        </div>
+
+        <div id="demo-results" class="hidden text-center">
+            <div class="score-circle mb-4" style="background: radial-gradient(circle, rgba(27, 48, 18, 0.5) 0%, rgba(27, 48, 18, 0) 70%);">
+                <svg class="w-full" style="width: 100%; height: 100%;" viewBox="0 0 150 150">
+                    <circle cx="75" cy="75" r="70" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="10"></circle>
+                    <circle id="scoreCircle" class="score-circle-bg" cx="75" cy="75" r="70" fill="none" stroke="url(#scoreGradient)" stroke-width="10" transform="rotate(-90 75 75)"></circle>
+                </svg>
+                <span id="matchScore" class="absolute text-4xl font-black">0%</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">High Resonance Match Found.</h3>
+            <p class="text-slate-300 mb-6 max-w-md mx-auto">Our full platform analyzes 50+ data points to find your perfect matches. <strong>Join the Founder's Circle above to get started.</strong></p>
+            <button id="reset-demo" style="padding: 0.5rem 1rem; background: #3c5e2d; border-radius: 9999px; font-size: 0.875rem; border: none; color: white; cursor: pointer; transition: all 0.3s;">Run Simulation Again</button>
+        </div>
+    </section>
+
+    <section class="text-center mb-20">
+        <div class="flex justify-center items-center gap-8 mb-4" style="flex-wrap: wrap;">
+            <div class="text-center">
+                <p class="text-4xl font-black secondary-gradient-text" id="waitlistCounter">1,284</p>
+                <p class="text-sm uppercase" style="letter-spacing: 0.1em; color: #ffffff;">Founders in the Circle</p>
+            </div>
+            <div class="text-center">
+                <p class="text-4xl font-black secondary-gradient-text" id="matchCounter">94,102</p>
+                <p class="text-sm uppercase" style="letter-spacing: 0.1em; color: #ffffff;">Matches Analyzed in London</p>
+            </div>
+        </div>
+        <div class="text-xs" style="color: #ffffff;">Join the top-tier restaurants and creators building the future of marketing.</div>
+    </section>
+
+    <footer class="text-center mt-20 py-4"><p style="color: #ffffff;" class="text-sm">&copy; 2024 EDEAT Ltd.</p></footer>
+
+</main>
+
+```
+
+</div>
+
+<svg width="0" height="0">
+<defs>
+<linearGradient id="scoreGradient">
+<stop offset="0%" stop-color="#b3e09b" />
+<stop offset="100%" stop-color="#5a9ca8" />
+</linearGradient>
+</defs>
+</svg>
+
+<script>
+<script>
+    // --- All your existing demo logic (steps 1, 2, analysis, results, counters) ---
+    const step1 = document.getElementById('demo-step-1');
+    const step2 = document.getElementById('demo-step-2');
+    const analysisScreen = document.getElementById('demo-analysis');
+    const resultsScreen = document.getElementById('demo-results');
+    const scoreCircle = document.getElementById('scoreCircle');
+    const matchScoreEl = document.getElementById('matchScore');
+    const demoData = { user: null, choice1: null };
+    const step2Content = {
+        // ...(Keep your existing step2Content object here)...
+         restaurant: `
+            <h2 class="text-3xl font-bold mb-4">Define Your Vibe.</h2>
+            <p class="text-slate-300 mb-8">What kind of atmosphere does your restaurant have?</p>
+            <div class="grid gap-4 max-w-4xl mx-auto" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                <div class="demo-card p-4" data-choice="Fine Dining"><div style="background: linear-gradient(135deg, #7fae6c, #b3e09b); border-radius: 0.5rem; margin-bottom: 0.5rem; width: 100%; height: 8rem;"></div><h3 class="font-bold">Fine Dining</h3></div>
+                <div class="demo-card p-4" data-choice="Casual Eatery"><div style="background: linear-gradient(135deg, #91c97a, #c3e8b0); border-radius: 0.5rem; margin-bottom: 0.5rem; width: 100%; height: 8rem;"></div><h3 class="font-bold">Casual Eatery</h3></div>
+                <div class="demo-card p-4" data-choice="Trendy Cafe"><div style="background: linear-gradient(135deg, #3a6a74, #5a9ca8); border-radius: 0.5rem; margin-bottom: 0.5rem; width: 100%; height: 8rem;"></div><h3 class="font-bold">Trendy Cafe</h3></div>
+                <div class="demo-card p-4" data-choice="Street Food"><div style="background: linear-gradient(135deg, #4b8895, #6fb8c6); border-radius: 0.5rem; margin-bottom: 0.5rem; width: 100%; height: 8rem;"></div><h3 class="font-bold">Street Food</h3></div>
+            </div>
+        `,
+        creator: `
+            <h2 class="text-3xl font-bold mb-4">Define Your Style.</h2>
+            <p class="text-slate-300 mb-8">What kind of content do you create?</p>
+            <div class="grid gap-6 max-w-4xl mx-auto" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="demo-card p-4" data-choice="Artistic & Moody"><div style="background: linear-gradient(135deg, #3a6a74, #5a9ca8); border-radius: 0.5rem; margin-bottom: 0.5rem; width: 100%; height: 8rem;"></div><h3 class="font-bold">Artistic & Moody</h3></div>
+                <div class="demo-card p-4" data-choice="Bright & Viral"><div style="background: linear-gradient(135deg, #7fae6c, #b3e09b); border-radius: 0.5rem; margin-bottom: 0.5rem; width: 100%; height: 8rem;"></div><h3 class="font-bold">Bright & Viral</h3></div>
+                <div class="demo-card p-4" data-choice="Authentic & Relatable"><div style="background: linear-gradient(135deg, #4b8895, #6fb8c6); border-radius: 0.5rem; margin-bottom: 0.5rem; width: 100%; height: 8rem;"></div><h3 class="font-bold">Authentic & Relatable</h3></div>
+            </div>
+        `
+    };
+    step1.addEventListener('click', (e) => {
+        const choiceCard = e.target.closest('.demo-card');
+        if (!choiceCard) return;
+        demoData.user = choiceCard.dataset.choice;
+        step2.innerHTML = step2Content[demoData.user];
+        step1.classList.add('hidden');
+        step2.classList.remove('hidden');
+    });
+    step2.addEventListener('click', (e) => {
+        const choiceCard = e.target.closest('.demo-card');
+        if (!choiceCard) return;
+        demoData.choice1 = choiceCard.dataset.choice;
+        step2.classList.add('hidden');
+        analysisScreen.classList.remove('hidden');
+        runAnalysis();
+    });
+    document.getElementById('reset-demo').addEventListener('click', () => {
+        resultsScreen.classList.add('hidden');
+        step1.classList.remove('hidden');
+        demoData.user = null;
+        demoData.choice1 = null;
+        matchScoreEl.textContent = '0%';
+        scoreCircle.style.strokeDashoffset = 440;
+    });
+    const analysisTextEl = document.getElementById('analysis-text');
+    const analysisSteps = [
+        "Initializing psychographic analysis...",
+        "Cross-referencing London creator database...",
+        "Calculating audience sentiment vectors...",
+        "Simulating campaign resonance...",
+        "Finalizing match potential..."
+    ];
+    function runAnalysis() {
+        let currentStep = 0;
+        analysisTextEl.textContent = analysisSteps[currentStep];
+        analysisTextEl.style.opacity = '1';
+        const interval = setInterval(() => {
+            currentStep++;
+            if (currentStep < analysisSteps.length) {
+                analysisTextEl.style.opacity = '0';
+                setTimeout(() => {
+                    analysisTextEl.textContent = analysisSteps[currentStep];
+                    analysisTextEl.style.opacity = '1';
+                }, 500);
+            } else {
+                clearInterval(interval);
+            }
+        }, 1000);
+        setTimeout(() => {
+            analysisScreen.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+            runResults();
+        }, 5500);
+    }
+    function runResults() {
+         const randomScore = Math.floor(Math.random() * 16) + 80;
+         scoreCircle.style.strokeDashoffset = 440;
+         matchScoreEl.textContent = '0%';
+         let currentScore = 0;
+         const scoreInterval = setInterval(() => {
+             if (currentScore >= randomScore) {
+                 clearInterval(scoreInterval);
+                 matchScoreEl.textContent = `${randomScore}%`;
+             }
+             else {
+                 currentScore++;
+                 matchScoreEl.textContent = `${currentScore}%`;
+             }
+         }, 20);
+         setTimeout(() => {
+             const circumference = 440;
+             const offset = circumference - (randomScore / 100) * circumference;
+             scoreCircle.style.strokeDashoffset = offset;
+         }, 100);
+    }
+    function animateCounter(element, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            element.innerText = Math.floor(progress * (end - start) + start).toLocaleString();
+            if (progress < 1) window.requestAnimationFrame(step);
+        };
+        window.requestAnimationFrame(step);
+    }
+    const waitlistCounter = document.getElementById('waitlistCounter');
+    const matchCounter = document.getElementById('matchCounter');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounter(waitlistCounter, 1000, 1284, 2000);
+                animateCounter(matchCounter, 90000, 94102, 2000);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    if(waitlistCounter) {
+        observer.observe(waitlistCounter);
+    }
+    setInterval(() => {
+        if(waitlistCounter) {
+            let currentWaitlist = parseInt(waitlistCounter.innerText.replace(/,/g, ''));
+            if (!isNaN(currentWaitlist)) {
+                waitlistCounter.innerText = (currentWaitlist + 1).toLocaleString();
+            }
+        }
+        if(matchCounter) {
+            let currentMatches = parseInt(matchCounter.innerText.replace(/,/g, ''));
+            if (!isNaN(currentMatches)) {
+                matchCounter.innerText = (currentMatches + Math.floor(Math.random() * 5) + 1).toLocaleString();
+            }
+        }
+    }, 3000);
+
+    // --- NEW FORM HANDLER WITH FETCH ---
+    const finalForm = document.getElementById('final-form');
+    const roleSelectors = document.querySelectorAll('.role-selector');
+    const finalSuccessMessage = document.getElementById('final-success-message');
+    const finalErrorMessage = document.getElementById('final-error-message'); // Make sure you added this div in the HTML
+    const roleSelectorContainer = document.getElementById('role-selector-container');
+    let selectedRole = '';
+
+    roleSelectors.forEach(button => {
+        button.addEventListener('click', () => {
+            roleSelectors.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            selectedRole = button.dataset.role;
+            finalForm.classList.remove('hidden');
+            document.getElementById('final-email-input').focus();
+        });
+    });
+
+    // THIS IS THE UPDATED SUBMIT FUNCTION
+    finalForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Stop the form from refreshing the page
+
+        const emailInput = document.getElementById('final-email-input');
+        const submitButton = finalForm.querySelector('button[type="submit"]');
+
+        if (!emailInput.value || !selectedRole) {
+            return; // Simple validation
+        }
+
+        // 1. Show loading state and disable button
+        submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';
+        finalSuccessMessage.classList.add('hidden');
+        if (finalErrorMessage) finalErrorMessage.classList.add('hidden'); // Hide previous errors
+
+        try {
+            // 2. Prepare data
+            const data = {
+                email: emailInput.value,
+                role: selectedRole
+            };
+
+            // 3. Send data to the backend API endpoint
+            const response = await fetch('/api/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            // 4. Handle response
+            if (response.ok) {
+                // SUCCESS
+                roleSelectorContainer.style.display = 'none';
+                finalForm.style.display = 'none';
+                finalSuccessMessage.classList.remove('hidden');
+            } else {
+                // SERVER ERROR (e.g., email exists, database error)
+                let errorMsg = 'Something went wrong. Please try again.';
+                if (response.status === 409) { // 409 Conflict - Email already exists
+                     errorMsg = 'This email is already in the Founder\'s Circle.';
+                     if (finalErrorMessage) finalErrorMessage.innerHTML = `<h3 class="text-2xl font-bold">Already Registered</h3><p>${errorMsg}</p>`;
+                } else {
+                     if (finalErrorMessage) finalErrorMessage.innerHTML = `<h3 class="text-2xl font-bold">Oops!</h3><p>${errorMsg}</p>`;
+                }
+                 if (finalErrorMessage) finalErrorMessage.classList.remove('hidden');
+                 throw new Error(`Server error: ${response.status}`); // Throw to trigger catch block reset
+            }
+
+        } catch (error) {
+            // NETWORK ERROR or error thrown above
+            console.error('Signup failed:', error);
+            // Show general error message ONLY if a specific one (like 409) wasn't already set
+             if (finalErrorMessage && !finalErrorMessage.innerHTML.includes('Already Registered')) {
+                finalErrorMessage.innerHTML = `<h3 class="text-2xl font-bold">Oops!</h3><p>Something went wrong. Please try again in a moment.</p>`;
+                finalErrorMessage.classList.remove('hidden');
+            }
+            // Reset button
+            submitButton.disabled = false;
+            submitButton.textContent = 'Claim My Spot in the Circle';
+        }
+    });
+
+    // --- Neural Network Animation Logic ---
+    const canvas = document.getElementById('neural-network');
+    const ctx = canvas ? canvas.getContext('2d') : null; // Add check if canvas exists
+    let particles = [];
+    let animationFrameId;
+
+    function resizeCanvas() {
+        if (!canvas) return; // Add check
+        const container = canvas.parentElement;
+        if (container) {
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+        }
+    }
+
+    function initNetwork() {
+        particles = [];
+        if(canvas) {
+            const numParticles = Math.floor(canvas.width / 30);
+            for (let i = 0; i < numParticles; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    radius: Math.random() * 1.5 + 1
+                });
+            }
+        }
+    }
+
+    function drawNetwork() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#b3e09b';
+            ctx.fill();
+        });
+
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < 100) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(179, 224, 155, ${1 - dist / 100})`;
+                    ctx.stroke();
+                }
+            }
+        }
+        animationFrameId = requestAnimationFrame(drawNetwork);
+    }
+
+    window.addEventListener('resize', () => {
+        cancelAnimationFrame(animationFrameId);
+        resizeCanvas();
+        initNetwork();
+        if (canvas && canvasObserver && canvasObserver.observe) { // Re-observe if needed
+             const entries = canvasObserver.takeRecords();
+             if (entries && entries[0] && entries[0].isIntersecting) {
+                 drawNetwork();
+             }
+        } else if (canvas) { // Fallback if observer not ready/supported
+            drawNetwork();
+        }
+    });
+
+    // Initialize only if canvas exists
+    if (canvas) {
+        resizeCanvas();
+        initNetwork();
+
+        const canvasObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    cancelAnimationFrame(animationFrameId);
+                    drawNetwork();
+                } else {
+                    cancelAnimationFrame(animationFrameId);
+                }
+            });
+        }, { threshold: 0.01 });
+        canvasObserver.observe(canvas);
+    }
+
+</script>
+</script>
+</body>
+</html>

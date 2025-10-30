@@ -1,0 +1,59 @@
+// This is your entire file: /api/signup.js
+
+// Import the Supabase client library
+import { createClient } from '@supabase/supabase-js';
+
+// IMPORTANT: Replace these with your actual Supabase URL and Anon Key
+const supabaseUrl = 'https://iahhxsjjfdavcvcyhbdp.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhaGh4c2pqZmRhdmN2Y3loYmRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE2Njk3MzQsImV4cCI6MjA3NzI0NTczNH0.ZuugF1-gtlzgMCjswGfEyIV0uvlfEbDoNqQ5_b1uuE4 ';
+
+// Create a Supabase client configured to use the Anon key
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// This is the main function Vercel will run when your form sends data to /api/signup
+export default async function handler(request, response) {
+  // Only allow POST requests (the method our form uses)
+  if (request.method !== 'POST') {
+    return response.status(405).json({ message: 'Method Not Allowed' });
+  }
+
+  try {
+    // Get the email and role from the data sent by the form
+    const { email, role } = request.body;
+
+    // Basic validation: Check if email and role exist
+    if (!email || !role) {
+      return response.status(400).json({ message: 'Email and role are required' });
+    }
+
+    // --- Save the data to Supabase ---
+    // Use the Supabase client to insert a new row into your 'signups' table
+    const { data, error } = await supabase
+      .from('signups') // The table name you created
+      .insert([
+        { email: email, role: role } // The data to insert
+      ])
+      .select(); // Optionally select the data back (good practice)
+
+    // Check if there was an error during the database insert
+    if (error) {
+      console.error('Supabase insert error:', error);
+      // If the error is because the email already exists (unique constraint)
+      if (error.code === '23505') { // Postgres code for unique violation
+         return response.status(409).json({ message: 'Email already exists' });
+      }
+      // For any other database error
+      return response.status(500).json({ message: 'Database error' });
+    }
+    // --- End of Supabase save logic ---
+
+    // If everything worked, send a 200 OK "Success" response back to the front-end
+    console.log('Successfully saved signup:', data);
+    return response.status(200).json({ message: 'Success', data: data });
+
+  } catch (error) {
+    // If any other unexpected error happens, send a 500 server error
+    console.error('Unexpected error in signup handler:', error);
+    return response.status(500).json({ message: 'Internal Server Error' });
+  }
+}
